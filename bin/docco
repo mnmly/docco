@@ -3,6 +3,18 @@
 var path = require('path');
 var fs = require('fs');
 var lib = path.join(path.dirname(fs.realpathSync(__filename)), '../lib');
+var program = require('commander');
+
+program.option('-d, --dir <path>', 'Output directory', 'docs').parse(process.argv)
+
+// If the output directory is set,
+// assign the dir to process for use in docco.
+var optionIndex = process.argv.indexOf('-d');
+if(optionIndex > -1){
+  process.argv.splice(optionIndex, 2);
+}
+process.DIR = program.dir;
 
 process.ARGV = process.argv = process.argv.slice(2, process.argv.length);
+
 require(lib + '/docco.js');
